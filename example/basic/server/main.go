@@ -18,6 +18,8 @@ import (
 	"context"
 	"log"
 	"net"
+	"net/http"
+	_ "net/http/pprof"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -36,6 +38,11 @@ func (h *HelloImpl) Echo(_ context.Context, req *api.Request) (resp *api.Respons
 }
 
 func main() {
+	go func() {
+		http.ListenAndServe("0.0.0.0:6060", nil)
+
+	}()
+
 	r, err := registry.NewDefaultNacosRegistry()
 	if err != nil {
 		panic(err)
